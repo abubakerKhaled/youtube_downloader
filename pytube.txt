@@ -1,0 +1,4 @@
+1 - import pytube and then import YouTube class from it.
+2 - have a YouTube object called yt
+3 - print the steams avilable and filter it based on the progressive=True 
+4 - download the stream based on the itag on the stream.
