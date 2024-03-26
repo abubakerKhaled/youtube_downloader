@@ -28,7 +28,7 @@ for stream in yt.streams.filter(progressive=True):
 itag = input("Itag: ")
     
 path = input("Path: ")
-path_to_download = str(os.path.join(Path.home(), path))    
+path_to_download = os.path.join(os.path.expanduser("~"), path)
 
 stream = yt.streams.get_by_itag(itag)
 stream.download(path_to_download)
