@@ -21,7 +21,7 @@ def on_progress(stream, chunk, bytes_remaining):
 choose = ''
 choose = input("if you want to download a Video press v or Playlist p: ")
 
-if choose == ['v', 'V']:
+if choose == 'v' or choose == 'V':
     
     video_url = input("Video link: ")
     # if the regular expression is true then make a youtube object
