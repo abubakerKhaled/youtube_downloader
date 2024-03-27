@@ -20,6 +20,16 @@ def get_validated_input(prompt, pattern=None):
         user_input = input(prompt)
     return user_input
 
+def filter_stream_by_progressive(video):
+    return video.streams.filter(progressive=True)
+
+def get_stream_by_itag(video):
+    itag = input('Enter itag:')
+    return video.streams.get_by_itag(itag)
+    
+def print_video_title(video):
+    print(f'Video title: {video.title}')
+
 def construct_path():
     path = input("Enter download directory path (leave empty for default): ").strip()
     if not path:
@@ -40,14 +50,12 @@ def print_video_stream(streams):
 
         print(f"[Resolution: {resolution}, Size: {file_size_MB}MB, Type: {file_type}, itag: {itag}]")
 
-
 def download_video(video_url, path_to_download):
     video = YouTube(video_url, on_progress_callback=on_progress)
-    print(f'Video title: {video.title}')
-    streams = video.streams.filter(progressive=True)
+    print_video_title(video)
+    streams = filter_stream_by_progressive(video)
     print_video_stream(streams)
-    itag = input('Enter itag:')
-    stream = video.streams.get_by_itag(itag)
+    stream = get_stream_by_itag(video)
     stream.download(path_to_download)
     print("Download completed.")
 
@@ -55,11 +63,10 @@ def download_playlist(playlist_url, path_to_download):
     playlist = Playlist(playlist_url)
     print(f'Downloading Playlist: {playlist.title}')
     for video in playlist.videos:
-        print(f'Downloading: {video.title}')
-        streams = video.streams.filter(progressive=True)
+        print_video_title(video)
+        streams = filter_stream_by_progressive(video)
         print_video_stream(streams)
-        itag = input('Enter itag:')
-        stream = video.streams.get_by_itag(itag)
+        stream = get_stream_by_itag(video)
         stream.download(path_to_download)
     print("Download completed.")
 
