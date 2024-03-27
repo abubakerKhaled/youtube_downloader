@@ -40,7 +40,7 @@ def download_playlist(playlist_url, path_to_download):
     for video in playlist.videos:
         print(f'Downloading: {video.title}')
         stream = video.streams.filter(progressive=True).first()
-        stream.download(path_to_download, on_progress=on_progress)
+        stream.download(path_to_download)
     print("Download completed.")
 
 # Main Script
