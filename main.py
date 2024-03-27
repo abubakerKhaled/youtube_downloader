@@ -27,10 +27,27 @@ def construct_path():
     else:
         return os.path.join(os.path.expanduser("~"), path)
 
+def print_video_stream(streams):
+    for stream in streams:
+        # Extract resolution and file size
+        resolution = stream.resolution
+        file_size = stream.filesize_approx
+        file_type = stream.mime_type.split('/')[1]  # Extracts 'mp4', 'webm', etc.
+        itag = stream.itag
+
+        # Convert file size to a more readable format (MB)
+        file_size_MB = round(file_size / (1024 * 1024), 2)
+
+        print(f"[Resolution: {resolution}, Size: {file_size_MB}MB, Type: {file_type}, itag: {itag}]")
+
+
 def download_video(video_url, path_to_download):
     video = YouTube(video_url, on_progress_callback=on_progress)
     print(f'Video title: {video.title}')
-    stream = video.streams.filter(progressive=True).first()
+    streams = video.streams.filter(progressive=True)
+    print_video_stream(streams)
+    itag = input('Enter itag:')
+    stream = video.streams.get_by_itag(itag)
     stream.download(path_to_download)
     print("Download completed.")
 
@@ -39,7 +56,10 @@ def download_playlist(playlist_url, path_to_download):
     print(f'Downloading Playlist: {playlist.title}')
     for video in playlist.videos:
         print(f'Downloading: {video.title}')
-        stream = video.streams.filter(progressive=True).first()
+        streams = video.streams.filter(progressive=True)
+        print_video_stream(streams)
+        itag = input('Enter itag:')
+        stream = video.streams.get_by_itag(itag)
         stream.download(path_to_download)
     print("Download completed.")
 
